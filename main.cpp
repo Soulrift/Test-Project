@@ -3,11 +3,64 @@
 #include <gl/glew.h>
 #include <SDL_opengl.h>
 
+const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 640;
+
+bool init();
+bool loadMedia();
+bool close();
+
+SDL_Window* gWindow = NULL;
+SDL_Surface* gScreenSurface = NULL;
+SDL_Surface* gHelloWorld = NULL;
+
+
+bool init()
+{
+    bool success = true;
+
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        std::cout << "load failed" << std::endl;
+        success = false;
+    } else
+    {
+        gWindow = SDL_CreateWindow("Test Project", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH,
+                                  SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        if (gWindow == NULL)
+        {
+            std::cout << "window create failed" << std::endl;
+            success = false;
+        } else
+        {
+            gScreenSurface = SDL_GetWindowSurface(gWindow);
+
+        }
+    }
+    return success;
+
+}
+
+bool loadMedia()
+{
+    //Loading success flag
+    bool success = true;
+
+    //Load splash image
+    gHelloWorld = SDL_LoadBMP( "hello_world.bmp" );
+    if( gHelloWorld == NULL )
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", "02_getting_an_image_on_the_screen/hello_world.bmp", SDL_GetError() );
+        success = false;
+    }
+
+    return success;
+}
+
 
 int main(int argc, char *argv[])
 {
-    int SCREEN_HEIGHT = 480;
-    int SCREEN_WIDTH = 640;
+
 
     SDL_Window *window = NULL;
 
